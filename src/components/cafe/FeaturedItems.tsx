@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/contexts/CartContext';
 
 interface MenuItem {
   id: string;
@@ -56,8 +57,18 @@ const featuredItems: MenuItem[] = [
 
 const FeaturedItems = () => {
   const { toast } = useToast();
+  const { addToCart } = useCart();
 
-  const addToCart = (item: MenuItem) => {
+  const handleAddToCart = (item: MenuItem) => {
+    addToCart({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.image,
+      description: item.description,
+      quantity: 1
+    });
+    
     toast({
       title: "Added to cart",
       description: `${item.name} has been added to your cart.`,
@@ -101,7 +112,7 @@ const FeaturedItems = () => {
                   variant="default" 
                   size="sm" 
                   className="w-full bg-cafe-brown hover:bg-cafe-darkBrown"
-                  onClick={() => addToCart(item)}
+                  onClick={() => handleAddToCart(item)}
                 >
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   Add to Cart

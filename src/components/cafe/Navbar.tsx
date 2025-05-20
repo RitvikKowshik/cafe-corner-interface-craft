@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Coffee, Menu, ShoppingCart, X } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const { itemCount } = useCart();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,15 +41,15 @@ const Navbar = () => {
           <Button variant="ghost" size="icon" className="relative" asChild>
             <Link to="/cart">
               <ShoppingCart className="h-5 w-5 text-cafe-darkBrown" />
-              {cartCount > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-cafe-brown text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                  {cartCount}
+                  {itemCount}
                 </span>
               )}
             </Link>
           </Button>
           <Button variant="default" className="hidden md:flex bg-cafe-brown hover:bg-cafe-darkBrown text-white" asChild>
-            <Link to="/order">Order Now</Link>
+            <Link to="/menu">Order Now</Link>
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
             <Menu className="h-5 w-5 text-cafe-darkBrown" />
@@ -97,13 +98,25 @@ const Navbar = () => {
             >
               Contact
             </Link>
+            <Link 
+              to="/cart" 
+              className="py-3 px-4 text-lg font-medium text-cafe-darkBrown hover:bg-cafe-light rounded-md flex items-center justify-between"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span>Cart</span>
+              {itemCount > 0 && (
+                <span className="bg-cafe-brown text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
+            </Link>
             <Button 
               variant="default" 
               className="mt-4 bg-cafe-brown hover:bg-cafe-darkBrown text-white w-full" 
               asChild
               onClick={() => setIsMenuOpen(false)}
             >
-              <Link to="/order">Order Now</Link>
+              <Link to="/menu">Order Now</Link>
             </Button>
           </nav>
         </div>
