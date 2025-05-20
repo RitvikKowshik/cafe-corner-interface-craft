@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/cafe/Navbar';
 import Footer from '@/components/cafe/Footer';
 import { Button } from '@/components/ui/button';
-import { FilePrinter, FileText, Home } from 'lucide-react';
+import { Printer, FileText, Home } from 'lucide-react';
 
 interface OrderItem {
   id: string;
@@ -117,7 +117,7 @@ const Receipt = () => {
                   onClick={handlePrint}
                   className="flex items-center gap-2"
                 >
-                  <FilePrinter className="h-4 w-4" />
+                  <Printer className="h-4 w-4" />
                   Print
                 </Button>
                 
