@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Coffee, Menu, ShoppingCart, X } from 'lucide-react';
+import { Coffee, Menu, ShoppingCart, X, Calendar } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 
 const Navbar = () => {
@@ -34,6 +34,9 @@ const Navbar = () => {
           </Link>
           <Link to="/contact" className="font-medium text-cafe-darkBrown hover:text-cafe-brown transition-colors">
             Contact
+          </Link>
+          <Link to="/order-history" className="font-medium text-cafe-darkBrown hover:text-cafe-brown transition-colors">
+            Orders
           </Link>
         </nav>
 
@@ -97,6 +100,14 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
+            </Link>
+            <Link 
+              to="/order-history" 
+              className="py-3 px-4 text-lg font-medium text-cafe-darkBrown hover:bg-cafe-light rounded-md flex items-center"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="flex-grow">Orders</span>
+              <Calendar className="h-5 w-5" />
             </Link>
             <Link 
               to="/cart" 

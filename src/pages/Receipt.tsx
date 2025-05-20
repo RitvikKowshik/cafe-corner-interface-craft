@@ -52,12 +52,46 @@ const Receipt = () => {
     const storedOrder = sessionStorage.getItem('orderDetails');
     
     if (storedOrder) {
-      setOrderDetails(JSON.parse(storedOrder));
+      const parsedOrder = JSON.parse(storedOrder);
+      setOrderDetails(parsedOrder);
+      
+      // Save to order history if this is a new order
+      // Check if this is a new order from checkout (not from history view)
+      if (!sessionStorage.getItem('viewingFromHistory')) {
+        saveToOrderHistory(parsedOrder);
+      }
     } else {
       // If no order details, redirect to home
       navigate('/');
     }
+    
+    // Clear the flag
+    return () => {
+      sessionStorage.removeItem('viewingFromHistory');
+    };
   }, [navigate]);
+  
+  // Save order to order history in localStorage
+  const saveToOrderHistory = (order: OrderDetails) => {
+    const existingOrders = localStorage.getItem('orderHistory');
+    let orderHistory: OrderDetails[] = [];
+    
+    if (existingOrders) {
+      orderHistory = JSON.parse(existingOrders);
+    }
+    
+    // Check if order already exists in history
+    const orderExists = orderHistory.some(
+      (historyOrder) => historyOrder.orderId === order.orderId
+    );
+    
+    // Only add if it doesn't exist already
+    if (!orderExists) {
+      // Add new order to the beginning of the array
+      orderHistory.unshift(order);
+      localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+    }
+  };
   
   // Print receipt function
   const handlePrint = () => {
@@ -205,6 +239,15 @@ const Receipt = () => {
             >
               <Link to="/menu">
                 Order More
+              </Link>
+            </Button>
+            <Button 
+              variant="default"
+              asChild 
+              className="bg-cafe-brown hover:bg-cafe-darkBrown flex items-center gap-2 mr-4"
+            >
+              <Link to="/order-history">
+                View Order History
               </Link>
             </Button>
             <Button 
